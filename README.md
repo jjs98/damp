@@ -32,8 +32,8 @@ Docs About Managed Projects
       ]
     }
   ],
-  "tags": ["test"],
-  "dependencies": ["Test2", "Test3"]
+  "dependencies": [2, 3],
+  "tags": ["test"]
 }
 ```
 
@@ -66,16 +66,6 @@ This is for dev
 - Database: prd_DB
 - User: prod_user
 ## <div name="dependencies" /> Dependencies
-Test2, Test3
+2, 3
 ## <div name="tags" /> Tags
 test
-
-```mermaid
-graph LR
-    A[Start] --> B[Process AI Data]
-    B --> C[Train Model]
-    C --> D[Deploy Model]
-    D --> E[Monitor Results]
-    E --> F[Refine Model]
-    F --> C
-```
