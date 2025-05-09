@@ -1,31 +1,11 @@
 ﻿using System.Text;
-using FastEndpoints;
+using Core.Models;
 
-namespace DAMP.WebApi.Endpoints;
+namespace Core.Utilities;
 
-public class UploadProjectEndpoint : Endpoint<Project, string>
+public class MarkdownUtility
 {
-    public override void Configure()
-    {
-        Post("/projects/upload");
-        AllowAnonymous();
-        Description(x =>
-            x.WithSummary("Upload a project")
-                .Accepts<Project>("application/json")
-                .Produces<string>(StatusCodes.Status200OK, contentType: "plain/text")
-                .Produces(StatusCodes.Status400BadRequest)
-                .Produces(StatusCodes.Status500InternalServerError)
-        );
-    }
-
-    public override async Task HandleAsync(Project project, CancellationToken ct)
-    {
-        var markdown = GenerateMarkdownFromProject(project);
-
-        await SendStringAsync(markdown, cancellation: ct);
-    }
-
-    private string GenerateMarkdownFromProject(Project project)
+    public static string GenerateMarkdownFromProject(Project project)
     {
         var projectMarkdown = new StringBuilder();
 
@@ -68,28 +48,4 @@ public class UploadProjectEndpoint : Endpoint<Project, string>
 
         return projectMarkdown.ToString();
     }
-}
-
-public class Project
-{
-    public required string Name { get; set; }
-    public string? Description { get; set; }
-    public IEnumerable<HostedEnvironment> HostedEnvironments { get; set; } = [];
-    public IEnumerable<string> Tags { get; set; } = [];
-    public IEnumerable<string> Dependencies { get; set; } = [];
-}
-
-public class HostedEnvironment
-{
-    public required string Url { get; set; }
-    public required string Environment { get; set; }
-    public string? Description { get; set; }
-    public IEnumerable<DatabaseConnection> DatabaseConnections { get; set; } = [];
-}
-
-public class DatabaseConnection
-{
-    public required string DatabaseServer { get; set; }
-    public required string Database { get; set; }
-    public required string User { get; set; }
 }

@@ -1,0 +1,66 @@
+﻿@rendermode InteractiveServer
+@page "/projects"
+@using Core.Interfaces.Services;
+@using Core.Models;
+@using Core.Utilities;
+@using System.Text.Json;
+@inject IProjectService projectService;
+
+<PageTitle>Projects</PageTitle>
+
+<h1>Projects</h1>
+
+<p>@(projectService is null ? "Service fehlt" : "Service da")</p>
+
+<InputTextArea @bind-Value="projectYAML"/>
+
+<button @onclick="GenerateMarkdown">Generate Markdown</button>
+<label>@error</label>
+
+<textarea>@projectMarkdown</textarea>
+
+<button @onclick="GetProjects">Get Projects</button>
+
+@code {
+    private string? projectYAML;
+    private string? projectMarkdown;
+    private string? error;
+    private int projectId;
+
+    private async Task GenerateMarkdown()
+    {
+        error = null;
+        if (string.IsNullOrWhiteSpace(projectYAML))
+        {
+            error = "Project YAML is empty.";
+            return;
+        }
+        try
+        {
+            var project = ProjectUtility.ConvertYamlToProject(projectYAML);
+            await projectService.AddProjectAsync(project, default);
+            projectMarkdown = MarkdownUtility.GenerateMarkdownFromProject(project);
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+    private async Task GetProjects()
+    {
+        error = null;
+        try
+        {
+            var projects = await projectService.GetProjectsAsync(default);
+
+            projectMarkdown = MarkdownUtility.GenerateMarkdownFromProject(projects.First());
+        }
+        catch (Exception e)
+        {
+            error = e.Message;
+        }
+    }
+
+
+}

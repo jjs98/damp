@@ -1,0 +1,35 @@
+{
+  "name": "Test1",
+  "description": "this is a test",
+  "hostedEnvironments": [
+    {
+      "url": "https://prod.test.de",
+      "environment": "prod",
+      "description": "This is for prod",
+      "databaseConnections": [
+        {
+          "databaseServer": "test.db",
+          "database": "tst_DB",
+          "user": "test_user"
+        }
+      ]
+    },
+    {
+      "url": "https://dev.test.de",
+      "environment": "dev",
+      "description": "This is for dev",
+      "databaseConnections": [
+        {
+          "databaseServer": "prod.db",
+          "database": "prd_DB",
+          "user": "prod_user"
+        }
+      ]
+    }
+  ],
+  "dependencies": [2, 3],
+  "tags": ["test"],
+  "sourceCode": {
+    "url": "https://github.com/jjs98/damp"
+  }
+}
