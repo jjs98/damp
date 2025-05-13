@@ -1,0 +1,57 @@
+﻿@using Web.Services
+@inherits LayoutComponentBase
+@rendermode InteractiveServer
+@inject TitleService titleService
+@inject IJSRuntime jsRuntime
+
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<HeadContent>
+    <title>@_title</title>
+</HeadContent>
+
+<MudLayout>
+    <MudAppBar>
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" @onclick="DrawerToggle" />
+        @_title
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>
+    <MudDrawer @bind-Open="drawerOpen">
+        <MudDrawerHeader>
+            <MudText Typo="Typo.h5" Class="mt-1">DAMP</MudText>
+        </MudDrawerHeader>
+        <NavMenu/>
+    </MudDrawer>
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Medium">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool drawerOpen = true;
+    private string _title = "DAMP";
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        titleService.OnTitleChanged += HandleTitleChanged;
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async void HandleTitleChanged(string newTitle)
+    {
+        _title = newTitle;
+        StateHasChanged();
+        await jsRuntime.InvokeVoidAsync("setDocumentTitle", newTitle);
+    }
+
+    private void DrawerToggle()
+    {
+        drawerOpen = !drawerOpen;
+    }
+}
