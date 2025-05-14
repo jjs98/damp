@@ -14,6 +14,7 @@ public class Program
         builder
             .Services.RegisterInfrastructureModule(builder.Configuration)
             .AddScoped<TitleService>()
+            .AddScoped<CacheService>()
             .AddMudServices()
             .AddRazorComponents()
             .AddInteractiveServerComponents();

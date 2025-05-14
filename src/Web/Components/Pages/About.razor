@@ -1,14 +1,14 @@
-﻿@page "/"
+﻿@page "/about"
 @using Web.Services
 @inject TitleService titleService
 
-<h1>Dashboard works!</h1>
+<h1>About works!</h1>
 
 @code {
 
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
-        titleService.SetTitle("Dashboard");
+        titleService.SetTitle("About");
         return base.OnAfterRenderAsync(firstRender);
     }
 }
