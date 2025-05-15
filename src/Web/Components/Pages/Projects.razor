@@ -1,8 +1,9 @@
 ﻿@page "/projects"
 @using Core.Interfaces.Services
 @using Web.Services
+@using JJS.Cache.Interfaces
 @inject TitleService titleService
-@inject CacheService cacheService
+@inject ICacheService cacheService
 @inject IProjectService projectService
 
 <MudTable Items="@projects" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@loading" LoadingProgressColor="Color.Info" CustomHeader="true">
@@ -54,4 +55,5 @@
         projects = cachedProjects ?? [];
         loading = false;
     }
+
 }

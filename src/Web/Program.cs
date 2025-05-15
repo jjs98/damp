@@ -1,4 +1,5 @@
 using Infrastructure;
+using JJS.Cache;
 using MudBlazor.Services;
 using Web.Components;
 using Web.Services;
@@ -14,7 +15,7 @@ public class Program
         builder
             .Services.RegisterInfrastructureModule(builder.Configuration)
             .AddScoped<TitleService>()
-            .AddScoped<CacheService>()
+            .UseCacheService(builder.Configuration)
             .AddMudServices()
             .AddRazorComponents()
             .AddInteractiveServerComponents();
